@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5001:5000"  # Map host port 5001 to container port 5000
+    volumes:
+      - .:/app
+    depends_on:
+      - redis
+    environment:
+      - FLASK_ENV=development
+      - REDIS_HOST=redis
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+      - SECRET_KEY=your-secret-key  # Add a secret key for JWT
+      - DATABASE_URL=sqlite:///app.db  # Example SQLite database URL
+    command: >
+      sh -c "flask db upgrade &&
+             flask run --host=0.0.0.0"
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  celery_worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: celery -A tasks worker --loglevel=info
+    volumes:
+      - .:/app
+    depends_on:
+      - redis
+    environment:
+      - REDIS_HOST=redis
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    user: "501:20"
+
+  celery_beat:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: celery -A tasks beat --loglevel=info
+    depends_on:
+      - redis
+    environment:
+      - REDIS_HOST=redis
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
