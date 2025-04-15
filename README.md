@@ -148,7 +148,7 @@ curl -X POST http://localhost:5001/auth/login \
 curl -X POST http://localhost:5001/portfolio/add \
 -H "Authorization: Bearer YOUR_JWT_TOKEN" \
 -H "Content-Type: application/json" \
--d '{"asset": "AAPL", "quantity": 10, "purchase_price": 150.0}'
+-d '{"asset": "BTC", "quantity": 10, "purchase_price": 150.0}'
 ```
 
 **View Portfolio**
@@ -162,7 +162,7 @@ curl -X GET http://localhost:5001/portfolio \
 curl -X POST http://localhost:5001/portfolio/sell \
 -H "Authorization: Bearer YOUR_JWT_TOKEN" \
 -H "Content-Type: application/json" \
--d '{"asset": "AAPL", "quantity": 5, "sell_price": 160.0}'
+-d '{"asset": "BTC", "quantity": 5, "sell_price": 160.0}'
 ```
 
 ### ⏰ Alerts
@@ -174,14 +174,6 @@ curl -X POST http://localhost:5001/alert/create \
 -H "Content-Type: application/json" \
 -d '{"asset": "BTC", "target_price": 30000}'
 ```
-
----
-
-## 🖼️ Screenshots
-
-| Dashboard | Alerts | Login |
-|----------|--------|-------|
-| ![Dashboard](https://via.placeholder.com/800x400?text=Dashboard) | ![Alerts](https://via.placeholder.com/800x400?text=Alerts) | ![Login](https://via.placeholder.com/800x400?text=Login) |
 
 ---
 
@@ -215,7 +207,7 @@ Distributed under the MIT License. See `LICENSE` for details.
 
 For feedback or questions:
 - Email: `abdelrahmanfouuad@gmail.com`
-- GitHub: [@yourusername](https://github.com/yourusername)
+- GitHub: [@vega11](https://github.com/vega11)
 
 ---
 
